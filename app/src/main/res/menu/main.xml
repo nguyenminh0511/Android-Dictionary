@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title=""
+        android:icon="@drawable/english_vietnamese_1"
+        app:showAsAction="always" >
+
+        <menu>
+            <item
+                android:id="@+id/action_eng_vn"
+                android:title="English - Vietnamese"
+                android:icon="@drawable/english_vietnamese"
+                android:orderInCategory="100"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/action_vn_eng"
+                android:title="Vietnamese - English"
+                android:icon="@drawable/vietnamese_english"
+                android:orderInCategory="100"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/action_eng_eng"
+                android:title="English - English"
+                android:icon="@drawable/english_english"
+                android:orderInCategory="100"
+                app:showAsAction="never"/>
+        </menu>
+
+    </item>
+</menu>
