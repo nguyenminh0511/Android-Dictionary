@@ -58,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         menuSetting = menu.findItem(R.id.action_settings);
+
+        String id = Global.getState(this, "dic_type");
+
+        if (id != null) {
+            onOptionsItemSelected(menu.findItem(Integer.valueOf(id)));
+        }
+
         return true;
     }
 
@@ -70,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        Global.saveState(this, "dic_type", String.valueOf(id));
 
         if (id == R.id.action_eng_vn) {
             menuSetting.setIcon(getDrawable(R.drawable.english_vietnamese_1));
