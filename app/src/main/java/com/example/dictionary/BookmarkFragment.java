@@ -15,6 +15,7 @@ import android.widget.Button;
 public class BookmarkFragment extends Fragment {
 
     private FragmentListener listener;
+    private String value = "Hello everyone";
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -50,7 +51,7 @@ public class BookmarkFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onItemClick();
+                    listener.onItemClick(value);
                 }
             }
         });

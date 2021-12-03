@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -54,15 +55,15 @@ public class MainActivity extends AppCompatActivity
 
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
             @Override
-            public void onItemClick() {
-                goToFragment( new DetailFragment(), false);
+            public void onItemClick(String value) {
+                goToFragment(DetailFragment.getNewInstance(value), false);
             }
         });
 
         bookmarkFragment.setOnFragmentListener(new FragmentListener() {
             @Override
-            public void onItemClick() {
-                goToFragment(new DetailFragment(), false);
+            public void onItemClick(String value) {
+                goToFragment(DetailFragment.getNewInstance(value), false);
             }
         });
 
