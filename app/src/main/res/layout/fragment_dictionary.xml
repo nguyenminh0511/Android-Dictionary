@@ -6,26 +6,10 @@
     tools:context=".DictionaryFragment"
     >
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/dictionaryList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_height="match_parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="DICTIONARY FRAGMENT"
-            android:gravity="center"/>
-
-        <Button
-            android:id="@+id/myBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GO TO DETAIL"
-            android:gravity="center"/>
-
-    </LinearLayout>
 
 </FrameLayout>
