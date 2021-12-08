@@ -11,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class BookmarkFragment extends Fragment {
 
     private FragmentListener listener;
-    private String value = "Hello everyone";
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -46,15 +47,64 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button myButton = (Button) view.findViewById(R.id.myBtn);
-        myButton.setOnClickListener(new View.OnClickListener() {
+//        Button myButton = (Button) view.findViewById(R.id.myBtn);
+//        myButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (listener != null) {
+//                    listener.onItemClick(value);
+//                }
+//            }
+//        });
+        ListView bookmarkList = (ListView) view.findViewById(R.id.bookmarkList);
+        BookmarkAdapter bookmarkAdapter = new BookmarkAdapter(getActivity(), getListOfWords());
+        bookmarkList.setAdapter(bookmarkAdapter);
+
+        bookmarkAdapter.setOnItemCLick(new ListItemListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(int position) {
                 if (listener != null) {
-                    listener.onItemClick(value);
+                    listener.onItemClick(String.valueOf(bookmarkAdapter.getItem(position)));
                 }
             }
         });
+
+        bookmarkAdapter.setOnItemDeleteClick(new ListItemListener() {
+            @Override
+            public void onItemClick(int position) {
+                String value = String.valueOf(bookmarkAdapter.getItem(position));
+                Toast.makeText(getContext(), value + " is deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    String[] getListOfWords() {
+        String[] source = new String[] {
+                "a",
+                "abadon",
+                "ability",
+                "able",
+                "about",
+                "above",
+                "aboard",
+                "absense",
+                "absent",
+                "absolute",
+                "absolutely",
+                "absorb",
+                "abuse",
+                "academic",
+                "accent",
+                "accept",
+                "acceptable",
+                "access",
+                "accident",
+                "accidental",
+                "accidentally",
+                "accommodation",
+                "accompany"
+        };
+        return source;
     }
 
     public void setOnFragmentListener(FragmentListener listener) {
