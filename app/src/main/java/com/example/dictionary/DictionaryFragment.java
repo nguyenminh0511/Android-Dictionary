@@ -19,6 +19,8 @@ public class DictionaryFragment extends Fragment {
 
     private FragmentListener listener;
     private String value = "Hello everyone";
+    ArrayAdapter<String> adapter;
+    ListView dictList;
 
     public DictionaryFragment() {
         // Required empty public constructor
@@ -59,8 +61,8 @@ public class DictionaryFragment extends Fragment {
 //            }
 //        });
 
-        ListView dictList = view.findViewById(R.id.dictionaryList);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+        dictList = view.findViewById(R.id.dictionaryList);
+        adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_1, getListOfWords());
         dictList.setAdapter(adapter);
         dictList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,6 +73,19 @@ public class DictionaryFragment extends Fragment {
                 }
             }
         });
+    }
+
+    //filter value for searching
+    public void filterValue(String value) {
+        adapter.getFilter().filter(value);
+
+//        int size = adapter.getCount();
+//        for (int i = 0; i < size; ++i) {
+//            if (adapter.getItem(i).startsWith(value)) {
+//                dictList.setSelection(i);
+//                break;
+//            }
+//        }
     }
 
     String[] getListOfWords() {
@@ -100,6 +115,12 @@ public class DictionaryFragment extends Fragment {
                 "accompany"
         };
         return source;
+    }
+
+    // reset Data when change translate mode
+    public void resetDataSource(String[] source) {
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,source);
+        dictList.setAdapter(adapter);
     }
 
     public void setOnFragmentListener(FragmentListener listener) {

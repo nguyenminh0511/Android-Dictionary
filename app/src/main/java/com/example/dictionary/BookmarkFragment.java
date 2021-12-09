@@ -73,7 +73,9 @@ public class BookmarkFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 String value = String.valueOf(bookmarkAdapter.getItem(position));
-                Toast.makeText(getContext(), value + " is deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), value + " is removed", Toast.LENGTH_SHORT).show();
+                bookmarkAdapter.removeItem(position);
+                bookmarkAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -8,26 +8,29 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class BookmarkAdapter extends BaseAdapter {
 
     private ListItemListener listener;
     private ListItemListener deleteBtnListener;
     Context mContext;
-    String[] mSource;
+    ArrayList<String> mSource;
 
     public BookmarkAdapter(Context context, String[] source) {
         this.mContext = context;
-        this.mSource = source;
+        this.mSource = new ArrayList<>(Arrays.asList(source));
     }
 
     @Override
     public int getCount() {
-        return mSource.length;
+        return mSource.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mSource[position];
+        return mSource.get(position);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class BookmarkAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.textView.setText(mSource[position]);
+        viewHolder.textView.setText(mSource.get(position));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +73,10 @@ public class BookmarkAdapter extends BaseAdapter {
             }
         });
         return convertView;
+    }
+
+    public void removeItem(int position) {
+        mSource.remove(position);
     }
 
     class ViewHolder {

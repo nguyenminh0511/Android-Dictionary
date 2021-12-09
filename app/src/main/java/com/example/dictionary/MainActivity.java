@@ -1,9 +1,12 @@
 package com.example.dictionary;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         dictionaryFragment = new DictionaryFragment();
         bookmarkFragment = new BookmarkFragment();
+        goToFragment(dictionaryFragment, true);
 
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
             @Override
@@ -67,7 +71,23 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        goToFragment(dictionaryFragment, true);
+        EditText edit_search = findViewById(R.id.edit_search);
+        edit_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dictionaryFragment.filterValue(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -80,6 +100,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id != null) {
             onOptionsItemSelected(menu.findItem(Integer.valueOf(id)));
+        } else {
+            dictionaryFragment.resetDataSource(DB.getData(R.id.action_eng_vn));
         }
 
         return true;
@@ -99,14 +121,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         Global.saveState(this, "dic_type", String.valueOf(id));
 
+        String[] source = DB.getData(id);
+
         if (id == R.id.action_eng_vn) {
+            dictionaryFragment.resetDataSource(source);
             menuSetting.setIcon(getDrawable(R.drawable.english_vietnamese_1));
         } else if (id == R.id.action_vn_eng) {
+            dictionaryFragment.resetDataSource(source);
             menuSetting.setIcon(getDrawable(R.drawable.vietnamese_english_1));
         } else if (id == R.id.action_eng_eng) {
+            dictionaryFragment.resetDataSource(source);
             menuSetting.setIcon(getDrawable(R.drawable.english_english_1));
         }
         return super.onOptionsItemSelected(item);
