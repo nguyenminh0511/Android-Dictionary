@@ -25,6 +25,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     DictionaryFragment dictionaryFragment;
     BookmarkFragment bookmarkFragment;
     Toolbar toolbar;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dbHelper = new DBHelper(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -102,7 +107,9 @@ public class MainActivity extends AppCompatActivity
         if (id != null) {
             onOptionsItemSelected(menu.findItem(Integer.valueOf(id)));
         } else {
-            dictionaryFragment.resetDataSource(DB.getData(R.id.action_eng_vn));
+            ArrayList<String> source = dbHelper.getWord(R.id.action_eng_vn);
+
+            dictionaryFragment.resetDataSource(source);
         }
 
         return true;
@@ -122,9 +129,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        // first time run app with database
+        if (R.id.action_settings == id) {
+            return true;
+        }
+
         Global.saveState(this, "dic_type", String.valueOf(id));
 
-        String[] source = DB.getData(id);
+        ArrayList<String> source = dbHelper.getWord(id);
 
         if (id == R.id.action_eng_vn) {
             dictionaryFragment.resetDataSource(source);

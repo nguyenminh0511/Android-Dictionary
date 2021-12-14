@@ -15,12 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class DictionaryFragment extends Fragment {
 
     private FragmentListener listener;
     private String value = "Hello everyone";
     ArrayAdapter<String> adapter;
     ListView dictList;
+    private ArrayList<String> mSource = new ArrayList<String>();
 
     public DictionaryFragment() {
         // Required empty public constructor
@@ -63,13 +67,13 @@ public class DictionaryFragment extends Fragment {
 
         dictList = view.findViewById(R.id.dictionaryList);
         adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1, getListOfWords());
+                android.R.layout.simple_list_item_1, mSource);
         dictList.setAdapter(adapter);
         dictList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (listener != null) {
-                    listener.onItemClick(getListOfWords()[position]);
+                    listener.onItemClick(mSource.get(position));
                 }
             }
         });
@@ -118,7 +122,8 @@ public class DictionaryFragment extends Fragment {
     }
 
     // reset Data when change translate mode
-    public void resetDataSource(String[] source) {
+    public void resetDataSource(ArrayList<String> source) {
+        mSource = source;
         adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,source);
         dictList.setAdapter(adapter);
     }
