@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     MenuItem menuSetting;
     DictionaryFragment dictionaryFragment;
     BookmarkFragment bookmarkFragment;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -144,7 +145,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_bookmark) {
-            goToFragment(bookmarkFragment, false);
+            String activeFragment = getSupportFragmentManager().
+                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
+
+            //if the present fragment is not bookmark fragment
+            if (!activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
+                goToFragment(bookmarkFragment, false);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -164,4 +171,22 @@ public class MainActivity extends AppCompatActivity
         }
         fragmentTransaction.commit();
     }
+
+    //Change option menu when change fragment
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        String activeFragment = getSupportFragmentManager().
+//                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
+//        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
+//            menuSetting.setVisible(false);
+//            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
+//            toolbar.setTitle("Bookmark");
+//        } else {
+//            menuSetting.setVisible(true);
+//            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
+//            toolbar.setTitle("");
+//        }
+//
+//        return true;
+//    }
 }
