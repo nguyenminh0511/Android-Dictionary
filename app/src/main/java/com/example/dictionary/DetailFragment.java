@@ -10,11 +10,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailFragment extends Fragment {
 
     private String value = "";
+    private TextView tvWord;
+    private ImageButton btnBookmark, btnVolumn;
+    private TextView tvWordTranslate;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -39,9 +44,28 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Toast.makeText(getContext(), this.value, Toast.LENGTH_SHORT).show();
+        tvWord = (TextView) view.findViewById(R.id.word);
+        tvWordTranslate = (TextView) view.findViewById(R.id.wordTranslate);
+        btnBookmark = (ImageButton) view.findViewById(R.id.bookmarkBtn);
+        btnVolumn = (ImageButton) view.findViewById(R.id.volumnBtn);
+
+        btnBookmark.setTag(0);
+
+        btnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = (int) btnBookmark.getTag();
+                if (i == 0) {
+                    btnBookmark.setImageResource(R.drawable.ic_bookmark_fill);
+                    btnBookmark.setTag(1);
+                } else if (i == 1) {
+                    btnBookmark.setImageResource(R.drawable.ic_bookmark_border);
+                    btnBookmark.setTag(0);
+                }
+            }
+        });
     }
 
     @Override
