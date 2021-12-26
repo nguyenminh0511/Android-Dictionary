@@ -18,9 +18,9 @@ public class BookmarkAdapter extends BaseAdapter {
     Context mContext;
     ArrayList<String> mSource;
 
-    public BookmarkAdapter(Context context, String[] source) {
+    public BookmarkAdapter(Context context, ArrayList<String> source) {
         this.mContext = context;
-        this.mSource = new ArrayList<>(Arrays.asList(source));
+        this.mSource = source;
     }
 
     @Override
@@ -77,6 +77,10 @@ public class BookmarkAdapter extends BaseAdapter {
 
     public void removeItem(int position) {
         mSource.remove(position);
+    }
+
+    public void clear() {
+        mSource.clear();
     }
 
     class ViewHolder {

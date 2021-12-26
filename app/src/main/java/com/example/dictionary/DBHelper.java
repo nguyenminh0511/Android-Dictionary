@@ -149,11 +149,20 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void removeBookmark(String key) {
+        try {
+            String q = "DELETE FROM bookmark WHERE upper(["+ COL_KEY +"]) = upper(?);";
+            myDB.execSQL(q, new Object[] {key});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @SuppressLint("Range")
-    public ArrayList<String> getAllWordFromBookmark(String key) {
+    public ArrayList<String> getAllWordFromBookmark() {
         String q = "SELECT  * FROM bookmark ORDER BY [date] DESC;";
 
-        Cursor result = myDB.rawQuery(q, new String[]{key});
+        Cursor result = myDB.rawQuery(q, null);
 
         ArrayList<String> source = new ArrayList<>();
         while (result.moveToNext()) {
@@ -182,5 +191,14 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return word;
+    }
+
+    public void clearBookmark() {
+        try {
+            String q = "DELETE FROM bookmark;";
+            myDB.execSQL(q);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,9 +20,17 @@ import android.widget.Toast;
 public class BookmarkFragment extends Fragment {
 
     private FragmentListener listener;
+    private DBHelper dbHelper;
+    private BookmarkAdapter bookmarkAdapter;
 
     public BookmarkFragment() {
         // Required empty public constructor
+    }
+
+    public static BookmarkFragment getNewInstance(DBHelper dbHelper) {
+        BookmarkFragment fragment = new BookmarkFragment();
+        fragment.dbHelper = dbHelper;
+        return fragment;
     }
 
     @Override
@@ -53,7 +62,7 @@ public class BookmarkFragment extends Fragment {
         setHasOptionsMenu(true); // Change option menu when change fragment
 
         ListView bookmarkList = (ListView) view.findViewById(R.id.bookmarkList);
-        BookmarkAdapter bookmarkAdapter = new BookmarkAdapter(getActivity(), getListOfWords());
+        bookmarkAdapter = new BookmarkAdapter(getActivity(), dbHelper.getAllWordFromBookmark());
         bookmarkList.setAdapter(bookmarkAdapter);
 
         bookmarkAdapter.setOnItemCLick(new ListItemListener() {
@@ -70,6 +79,7 @@ public class BookmarkFragment extends Fragment {
             public void onItemClick(int position) {
                 String value = String.valueOf(bookmarkAdapter.getItem(position));
                 Toast.makeText(getContext(), value + " is removed", Toast.LENGTH_SHORT).show();
+                dbHelper.removeBookmark(value);
                 bookmarkAdapter.removeItem(position);
                 bookmarkAdapter.notifyDataSetChanged();
             }
@@ -112,5 +122,16 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_clear,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_clear) {
+            dbHelper.clearBookmark();
+            bookmarkAdapter.clear();
+            bookmarkAdapter.notifyDataSetChanged();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

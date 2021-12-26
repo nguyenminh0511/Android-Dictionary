@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dictionaryFragment = new DictionaryFragment();
-        bookmarkFragment = new BookmarkFragment();
+        bookmarkFragment = BookmarkFragment.getNewInstance(dbHelper);
         goToFragment(dictionaryFragment, true);
 
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         menuSetting = menu.findItem(R.id.action_settings);
@@ -134,23 +135,25 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         // first time run app with database
-        if (R.id.action_settings == id) {
-            return true;
-        }
-
-        Global.saveState(this, "dic_type", String.valueOf(id));
-
-        ArrayList<String> source = dbHelper.getWord(id);
 
         if (id == R.id.action_eng_vn) {
+            Global.saveState(this, "dic_type", String.valueOf(id));
+            ArrayList<String> source = dbHelper.getWord(id);
             dictionaryFragment.resetDataSource(source);
             menuSetting.setIcon(getDrawable(R.drawable.english_vietnamese_1));
+            return true;
         } else if (id == R.id.action_vn_eng) {
+            Global.saveState(this, "dic_type", String.valueOf(id));
+            ArrayList<String> source = dbHelper.getWord(id);
             dictionaryFragment.resetDataSource(source);
             menuSetting.setIcon(getDrawable(R.drawable.vietnamese_english_1));
+            return true;
         } else if (id == R.id.action_eng_eng) {
+            Global.saveState(this, "dic_type", String.valueOf(id));
+            ArrayList<String> source = dbHelper.getWord(id);
             dictionaryFragment.resetDataSource(source);
             menuSetting.setIcon(getDrawable(R.drawable.english_english_1));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
