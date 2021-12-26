@@ -189,20 +189,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     //Change option menu when change fragment
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        String activeFragment = getSupportFragmentManager().
-//                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
-//        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
-//            menuSetting.setVisible(false);
-//            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
-//            toolbar.setTitle("Bookmark");
-//        } else {
-//            menuSetting.setVisible(true);
-//            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
-//            toolbar.setTitle("");
-//        }
-//
-//        return true;
-//    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String activeFragment = getSupportFragmentManager().
+                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
+        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
+            menuSetting.setVisible(false);
+            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
+            toolbar.setTitle("Bookmark");
+        } else {
+            menuSetting.setVisible(true);
+            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
+            toolbar.setTitle("");
+        }
+
+        return true;
+    }
 }
