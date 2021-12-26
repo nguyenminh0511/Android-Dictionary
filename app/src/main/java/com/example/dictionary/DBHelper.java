@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String TBL_BOOKMARK = "bookmark";
 
     private final String COL_KEY = "word";
-    private final String COL_VALUE = "destination";
+    private final String COL_VALUE = "html";
 
     public SQLiteDatabase myDB;
 
@@ -101,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public ArrayList<String> getWord(int dicTyp) {
         String tableName = getTableName(dicTyp);
-        String q = "SELECT [word], [description] FROM " + tableName;
+        String q = "SELECT [word], [html] FROM " + tableName;
 
         Cursor result = myDB.rawQuery(q, null);
 
@@ -116,8 +116,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public Word getWord(String key, int dicType) {
         String tableName = getTableName(dicType);
-        String q = "SELECT [word], [description] FROM " + tableName +
-                "WHERE upper([key]) = upper(?);";
+        String q = "SELECT [word], [html] FROM " + tableName +
+                " WHERE upper([word]) = upper(?);";
 
         Cursor result = myDB.rawQuery(q, new String[]{key});
 
@@ -174,8 +174,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public Word getWordFromBookmark(String key) {
         String q = "SELECT * FROM bookmark WHERE upper([word]) = upper(?)";
         Cursor result = myDB.rawQuery(q, new String[] {key});
-        Word word = new Word();
+        Word word = null;
         while (result.moveToNext()) {
+            word = new Word();
             word.key = result.getString(result.getColumnIndex(COL_KEY));
             word.value = result.getString(result.getColumnIndex(COL_VALUE));
         }

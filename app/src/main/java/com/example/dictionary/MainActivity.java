@@ -66,14 +66,18 @@ public class MainActivity extends AppCompatActivity
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
-                goToFragment(DetailFragment.getNewInstance(value), false);
+                String id = Global.getState(MainActivity.this, "dic_type");
+                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
+                goToFragment(DetailFragment.getNewInstance(value, dbHelper, dicType), false);
             }
         });
 
         bookmarkFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
-                goToFragment(DetailFragment.getNewInstance(value), false);
+                String id = Global.getState(MainActivity.this, "dic_type");
+                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
+                goToFragment(DetailFragment.getNewInstance(value, dbHelper, dicType), false);
             }
         });
 

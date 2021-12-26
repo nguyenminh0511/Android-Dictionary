@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,15 +20,19 @@ public class DetailFragment extends Fragment {
     private String value = "";
     private TextView tvWord;
     private ImageButton btnBookmark, btnVolumn;
-    private TextView tvWordTranslate;
+    private WebView tvWordTranslate;
+    private DBHelper mDBHelper;
+    private int mDictype;
 
     public DetailFragment() {
         // Required empty public constructor
     }
 
-    public static DetailFragment getNewInstance(String value) {
+    public static DetailFragment getNewInstance(String value, DBHelper dbHelper, int dicType) {
         DetailFragment fragment = new DetailFragment();
         fragment.value = value;
+        fragment.mDBHelper = dbHelper;
+        fragment.mDictype = dicType;
         return fragment;
     }
 
@@ -47,11 +52,22 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tvWord = (TextView) view.findViewById(R.id.word);
-        tvWordTranslate = (TextView) view.findViewById(R.id.wordTranslate);
+        tvWordTranslate = (WebView) view.findViewById(R.id.wordTranslate);
         btnBookmark = (ImageButton) view.findViewById(R.id.bookmarkBtn);
         btnVolumn = (ImageButton) view.findViewById(R.id.volumnBtn);
 
-        btnBookmark.setTag(0);
+        Word word = mDBHelper.getWord(value, mDictype);
+        tvWord.setText(word.key);
+        tvWordTranslate.loadDataWithBaseURL(null, word.value, "text/html",
+                "utf-8", null);
+
+        Word bookmarkWord = mDBHelper.getWordFromBookmark(value);
+        int isMark = bookmarkWord == null ? 0 : 1;
+
+        btnBookmark.setTag(isMark);
+
+        int icon = bookmarkWord == null ? R.drawable.ic_bookmark_border : R.drawable.ic_bookmark_fill;
+        btnBookmark.setImageResource(icon);
 
         btnBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
