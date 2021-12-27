@@ -19,7 +19,7 @@ public class DetailFragment extends Fragment {
 
     private String value = "";
     private TextView tvWord;
-    private ImageButton btnBookmark, btnVolumn;
+    private ImageButton btnBookmark, btnVolumn, btnBack;
     private WebView tvWordTranslate;
     private DBHelper mDBHelper;
     private int mDictype;
@@ -51,10 +51,14 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setHasOptionsMenu(true); // Change option menu when change fragment
+
         tvWord = (TextView) view.findViewById(R.id.word);
         tvWordTranslate = (WebView) view.findViewById(R.id.wordTranslate);
         btnBookmark = (ImageButton) view.findViewById(R.id.bookmarkBtn);
         btnVolumn = (ImageButton) view.findViewById(R.id.volumnBtn);
+        btnBack = (ImageButton) view.findViewById(R.id.backBtn);
 
 //        final Word word = mDBHelper.getWord(value, mDictype);
 //        tvWord.setText(word.key);
@@ -93,6 +97,14 @@ public class DetailFragment extends Fragment {
                     btnBookmark.setTag(0);
                     mDBHelper.removeBookmark(word);
                 }
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //change later
+                System.out.println("Press back");
             }
         });
     }

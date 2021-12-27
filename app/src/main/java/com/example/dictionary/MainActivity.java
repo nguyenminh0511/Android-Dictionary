@@ -200,10 +200,32 @@ public class MainActivity extends AppCompatActivity
             menuSetting.setVisible(false);
             toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
             toolbar.setTitle("Bookmark");
+            try {
+                this.getSupportActionBar().show();
+            }
+            // catch block to handle NullPointerException
+            catch (NullPointerException e) {
+            }
+        } else if (activeFragment.equals(DetailFragment.class.getSimpleName())) {
+            menuSetting.setVisible(false);
+            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
+            toolbar.setTitle("MEANING");
+            try {
+                this.getSupportActionBar().hide();
+            }
+            // catch block to handle NullPointerException
+            catch (NullPointerException e) {
+            }
         } else {
             menuSetting.setVisible(true);
             toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
             toolbar.setTitle("");
+            try {
+                this.getSupportActionBar().show();
+            }
+            // catch block to handle NullPointerException
+            catch (NullPointerException e) {
+            }
         }
 
         return true;
