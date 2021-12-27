@@ -56,12 +56,23 @@ public class DetailFragment extends Fragment {
         btnBookmark = (ImageButton) view.findViewById(R.id.bookmarkBtn);
         btnVolumn = (ImageButton) view.findViewById(R.id.volumnBtn);
 
-        final Word word = mDBHelper.getWord(value, mDictype);
+//        final Word word = mDBHelper.getWord(value, mDictype);
+//        tvWord.setText(word.key);
+//        tvWordTranslate.loadDataWithBaseURL(null, word.value, "text/html",
+//                "utf-8", null);
+
+        Word bookmarkWord = mDBHelper.getWordFromBookmark(value);
+        Word word;
+        if (bookmarkWord != null) {
+            word = bookmarkWord;
+        } else {
+            word = mDBHelper.getWord(value, mDictype);
+        }
+
         tvWord.setText(word.key);
         tvWordTranslate.loadDataWithBaseURL(null, word.value, "text/html",
                 "utf-8", null);
 
-        Word bookmarkWord = mDBHelper.getWordFromBookmark(value);
         int isMark = bookmarkWord == null ? 0 : 1;
 
         btnBookmark.setTag(isMark);
