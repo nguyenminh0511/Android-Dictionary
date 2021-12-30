@@ -23,6 +23,7 @@ public class DetailFragment extends Fragment {
     private WebView tvWordTranslate;
     private DBHelper mDBHelper;
     private int mDictype;
+    private FragmentListener listener;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -103,8 +104,10 @@ public class DetailFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //change later
-                System.out.println("Press back");
+                if (listener != null) {
+                    System.out.println("Press back");
+                    listener.onItemClick(null);
+                }
             }
         });
     }
@@ -117,5 +120,9 @@ public class DetailFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void setOnFragmentListener(FragmentListener listener) {
+        this.listener = listener;
     }
 }

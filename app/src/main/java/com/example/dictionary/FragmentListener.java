@@ -1,5 +1,7 @@
 package com.example.dictionary;
 
+import androidx.annotation.Nullable;
+
 public interface FragmentListener {
-    void onItemClick(String value);
+    void onItemClick(@Nullable String value);
 }

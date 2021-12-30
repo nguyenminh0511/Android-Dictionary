@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     MenuItem menuSetting;
     DictionaryFragment dictionaryFragment;
     BookmarkFragment bookmarkFragment;
+    DetailFragment detailFragment;
     Toolbar toolbar;
     DBHelper dbHelper;
 
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity
 
         dictionaryFragment = new DictionaryFragment();
         bookmarkFragment = BookmarkFragment.getNewInstance(dbHelper);
+        detailFragment = new DetailFragment();
         goToFragment(dictionaryFragment, true);
 
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
@@ -68,7 +71,15 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(String value) {
                 String id = Global.getState(MainActivity.this, "dic_type");
                 int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
-                goToFragment(DetailFragment.getNewInstance(value, dbHelper, dicType), false);
+                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
+                goToFragment(detailFragment, false);
+                detailFragment.setOnFragmentListener(new FragmentListener() {
+                    @Override
+                    public void onItemClick(@Nullable String value) {
+//                        Toast.makeText(MainActivity.this, "Press", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    }
+                });
             }
         });
 
@@ -77,9 +88,25 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(String value) {
                 String id = Global.getState(MainActivity.this, "dic_type");
                 int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
-                goToFragment(DetailFragment.getNewInstance(value, dbHelper, dicType), false);
+                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
+                goToFragment(detailFragment, false);
+                detailFragment.setOnFragmentListener(new FragmentListener() {
+                    @Override
+                    public void onItemClick(@Nullable String value) {
+//                        Toast.makeText(MainActivity.this, "Press", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    }
+                });
             }
         });
+
+//        detailFragment.setOnFragmentListener(new FragmentListener() {
+//            @Override
+//            public void onItemClick(@Nullable String value) {
+//                Toast.makeText(MainActivity.this, "Press", Toast.LENGTH_SHORT).show();
+//                onBackPressed();
+//            }
+//        });
 
         EditText edit_search = findViewById(R.id.edit_search);
         edit_search.addTextChangedListener(new TextWatcher() {
