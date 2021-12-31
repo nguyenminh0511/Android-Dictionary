@@ -1,5 +1,9 @@
 package com.example.dictionary;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -69,17 +73,24 @@ public class MainActivity extends AppCompatActivity
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
+
+//                new HandleLoadData().execute(value);
+
                 String id = Global.getState(MainActivity.this, "dic_type");
-                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
-                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
-                goToFragment(detailFragment, false);
-                detailFragment.setOnFragmentListener(new FragmentListener() {
-                    @Override
-                    public void onItemClick(@Nullable String value) {
-//                        Toast.makeText(MainActivity.this, "Press", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
-                    }
-                });
+//                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
+//                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
+//                goToFragment(detailFragment, false);
+//                detailFragment.setOnFragmentListener(new FragmentListener() {
+//                    @Override
+//                    public void onItemClick(@Nullable String value) {
+//                        onBackPressed();
+//                    }
+//                });
+
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("word", value);
+                intent.putExtra("dic_type", id);
+                startActivity(intent);
             }
         });
 
@@ -256,5 +267,33 @@ public class MainActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    private class HandleLoadData extends AsyncTask <String, Void, Fragment> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Fragment doInBackground(String... value) {
+            String id = Global.getState(MainActivity.this, "dic_type");
+            int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
+            detailFragment = DetailFragment.getNewInstance(value[0], dbHelper, dicType);
+
+            return detailFragment;
+        }
+
+        @Override
+        protected void onPostExecute(Fragment fragment) {
+            super.onPostExecute(fragment);
+            goToFragment(fragment, false);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
     }
 }
