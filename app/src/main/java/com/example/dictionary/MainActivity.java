@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(String value) {
 
-//                new HandleLoadData().execute(value);
-
                 String id = Global.getState(MainActivity.this, "dic_type");
 //                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
 //                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
@@ -98,26 +96,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(String value) {
                 String id = Global.getState(MainActivity.this, "dic_type");
-                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
-                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
-                goToFragment(detailFragment, false);
-                detailFragment.setOnFragmentListener(new FragmentListener() {
-                    @Override
-                    public void onItemClick(@Nullable String value) {
-//                        Toast.makeText(MainActivity.this, "Press", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
-                    }
-                });
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("word", value);
+                intent.putExtra("dic_type", id);
+                startActivity(intent);
             }
         });
 
-//        detailFragment.setOnFragmentListener(new FragmentListener() {
-//            @Override
-//            public void onItemClick(@Nullable String value) {
-//                Toast.makeText(MainActivity.this, "Press", Toast.LENGTH_SHORT).show();
-//                onBackPressed();
-//            }
-//        });
 
         EditText edit_search = findViewById(R.id.edit_search);
         edit_search.addTextChangedListener(new TextWatcher() {
