@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     MenuItem menuSetting;
     DictionaryFragment dictionaryFragment;
     BookmarkFragment bookmarkFragment;
-    DetailFragment detailFragment;
+//    DetailFragment detailFragment;
     Toolbar toolbar;
     DBHelper dbHelper;
 
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         dictionaryFragment = new DictionaryFragment();
         bookmarkFragment = BookmarkFragment.getNewInstance(dbHelper);
-        detailFragment = new DetailFragment();
+//        detailFragment = new DetailFragment();
         goToFragment(dictionaryFragment, true);
 
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
@@ -223,62 +223,12 @@ public class MainActivity extends AppCompatActivity
             menuSetting.setVisible(false);
             toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
             toolbar.setTitle("Bookmark");
-            try {
-                this.getSupportActionBar().show();
-            }
-            // catch block to handle NullPointerException
-            catch (NullPointerException e) {
-            }
-        } else if (activeFragment.equals(DetailFragment.class.getSimpleName())) {
-            menuSetting.setVisible(false);
-            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
-            toolbar.setTitle("MEANING");
-            try {
-                this.getSupportActionBar().hide();
-            }
-            // catch block to handle NullPointerException
-            catch (NullPointerException e) {
-            }
         } else {
             menuSetting.setVisible(true);
             toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
             toolbar.setTitle("");
-            try {
-                this.getSupportActionBar().show();
-            }
-            // catch block to handle NullPointerException
-            catch (NullPointerException e) {
-            }
         }
 
         return true;
-    }
-
-    private class HandleLoadData extends AsyncTask <String, Void, Fragment> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Fragment doInBackground(String... value) {
-            String id = Global.getState(MainActivity.this, "dic_type");
-            int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
-            detailFragment = DetailFragment.getNewInstance(value[0], dbHelper, dicType);
-
-            return detailFragment;
-        }
-
-        @Override
-        protected void onPostExecute(Fragment fragment) {
-            super.onPostExecute(fragment);
-            goToFragment(fragment, false);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
     }
 }

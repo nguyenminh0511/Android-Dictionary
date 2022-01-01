@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -17,6 +21,7 @@ public class DetailActivity extends AppCompatActivity {
     private WebView tvWordTranslate;
     private DBHelper mDBHelper;
     private int mDictype;
+    private TextToSpeech pronun;
 
 
     @Override
@@ -60,6 +65,33 @@ public class DetailActivity extends AppCompatActivity {
                     btnBookmark.setTag(0);
                     mDBHelper.removeBookmark(word);
                 }
+            }
+        });
+
+        pronun = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = pronun.setLanguage(Locale.UK);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("Pronunciation", "Language not supported");
+                    } else {
+                        btnVolumn.setEnabled(true);
+                    }
+                } else {
+                    Log.e("Pronunciation", "Init failed");
+                }
+            }
+        });
+
+        btnVolumn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pronun.setPitch(1.0F);
+                pronun.setSpeechRate(1.0F);
+                pronun.speak(value, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
