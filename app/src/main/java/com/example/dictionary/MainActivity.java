@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 
     MenuItem menuSetting;
     DictionaryFragment dictionaryFragment;
-    BookmarkFragment bookmarkFragment;
+//    BookmarkFragment bookmarkFragment;
 //    DetailFragment detailFragment;
     Toolbar toolbar;
     DBHelper dbHelper;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dictionaryFragment = new DictionaryFragment();
-        bookmarkFragment = BookmarkFragment.getNewInstance(dbHelper);
+//        bookmarkFragment = BookmarkFragment.getNewInstance(dbHelper);
 //        detailFragment = new DetailFragment();
         goToFragment(dictionaryFragment, true);
 
@@ -75,34 +75,12 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(String value) {
 
                 String id = Global.getState(MainActivity.this, "dic_type");
-//                int dicType = id == null ? R.id.action_eng_vn : Integer.valueOf(id);
-//                detailFragment = DetailFragment.getNewInstance(value, dbHelper, dicType);
-//                goToFragment(detailFragment, false);
-//                detailFragment.setOnFragmentListener(new FragmentListener() {
-//                    @Override
-//                    public void onItemClick(@Nullable String value) {
-//                        onBackPressed();
-//                    }
-//                });
-
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("word", value);
                 intent.putExtra("dic_type", id);
                 startActivity(intent);
             }
         });
-
-        bookmarkFragment.setOnFragmentListener(new FragmentListener() {
-            @Override
-            public void onItemClick(String value) {
-                String id = Global.getState(MainActivity.this, "dic_type");
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("word", value);
-                intent.putExtra("dic_type", id);
-                startActivity(intent);
-            }
-        });
-
 
         EditText edit_search = findViewById(R.id.edit_search);
         edit_search.addTextChangedListener(new TextWatcher() {
@@ -187,13 +165,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_bookmark) {
-            String activeFragment = getSupportFragmentManager().
-                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
-
-            //if the present fragment is not bookmark fragment
-            if (!activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
-                goToFragment(bookmarkFragment, false);
-            }
+            String dicType = Global.getState(MainActivity.this, "dic_type");
+            Intent intentToBookmark = new Intent(MainActivity.this, BookmarkActivity.class);
+            intentToBookmark.putExtra("dic_type", dicType);
+            startActivity(intentToBookmark);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -215,20 +190,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     //Change option menu when change fragment
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        String activeFragment = getSupportFragmentManager().
-                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
-        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
-            menuSetting.setVisible(false);
-            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
-            toolbar.setTitle("Bookmark");
-        } else {
-            menuSetting.setVisible(true);
-            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
-            toolbar.setTitle("");
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        String activeFragment = getSupportFragmentManager().
+//                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
+//        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
+//            menuSetting.setVisible(false);
+//            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
+//            toolbar.setTitle("Bookmark");
+//        } else {
+//            menuSetting.setVisible(true);
+//            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
+//            toolbar.setTitle("");
+//        }
+//
+//        return true;
+//    }
 }

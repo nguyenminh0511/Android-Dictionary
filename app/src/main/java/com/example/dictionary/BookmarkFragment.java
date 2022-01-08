@@ -59,7 +59,7 @@ public class BookmarkFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setHasOptionsMenu(true); // Change option menu when change fragment
+//        setHasOptionsMenu(true); // Change option menu when change fragment
 
         ListView bookmarkList = (ListView) view.findViewById(R.id.bookmarkList);
         bookmarkAdapter = new BookmarkAdapter(getActivity(), dbHelper.getAllWordFromBookmark());
