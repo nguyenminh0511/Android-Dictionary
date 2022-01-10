@@ -1,4 +1,4 @@
-package com.example.dictionary;
+package com.example.dictionary.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,15 +7,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-public class BookmarkActivity extends AppCompatActivity {
+import com.example.dictionary.BookmarkAdapter;
+import com.example.dictionary.DBHelper;
+import com.example.dictionary.DetailActivity;
+import com.example.dictionary.ListItemListener;
+import com.example.dictionary.R;
+import com.google.android.material.navigation.NavigationView;
+
+public class BookmarkActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     MenuItem menuSetting;
     private DBHelper dbHelper;
     ListView bookmarkList;
     BookmarkAdapter bookmarkAdapter;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,10 @@ public class BookmarkActivity extends AppCompatActivity {
         bookmarkList.setAdapter(bookmarkAdapter);
         Intent intentFromMain = getIntent();
         String dicType = intentFromMain.getStringExtra("dic_type");
+
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         bookmarkAdapter.setOnItemCLick(new ListItemListener() {
             @Override
@@ -76,5 +92,10 @@ public class BookmarkActivity extends AppCompatActivity {
             bookmarkAdapter.notifyDataSetChanged();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }

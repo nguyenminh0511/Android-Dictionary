@@ -1,10 +1,12 @@
-package com.example.dictionary;
+package com.example.dictionary.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.dictionary.R;
 
 public class SplashActivity extends AppCompatActivity {
 

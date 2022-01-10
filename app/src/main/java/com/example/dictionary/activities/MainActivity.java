@@ -1,36 +1,30 @@
-package com.example.dictionary;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
+package com.example.dictionary.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.dictionary.DBHelper;
+import com.example.dictionary.DetailActivity;
+import com.example.dictionary.DictionaryFragment;
+import com.example.dictionary.FragmentListener;
+import com.example.dictionary.Global;
+import com.example.dictionary.R;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
