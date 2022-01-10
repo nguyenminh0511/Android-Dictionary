@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.dictionary.BookmarkAdapter;
 import com.example.dictionary.DBHelper;
 import com.example.dictionary.DetailActivity;
+import com.example.dictionary.Global;
 import com.example.dictionary.ListItemListener;
 import com.example.dictionary.R;
 import com.google.android.material.navigation.NavigationView;
@@ -117,9 +118,11 @@ public class BookmarkActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-        drawer.closeDrawer(GravityCompat.START);
-
+        if (id == R.id.nav_back_home) {
+            onBackPressed();
+        }
         return true;
     }
 }
