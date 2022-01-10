@@ -1,16 +1,21 @@
 package com.example.dictionary.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.dictionary.BookmarkAdapter;
@@ -27,7 +32,8 @@ public class BookmarkActivity extends AppCompatActivity
     private DBHelper dbHelper;
     ListView bookmarkList;
     BookmarkAdapter bookmarkAdapter;
-    Toolbar toolbar;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +42,25 @@ public class BookmarkActivity extends AppCompatActivity
 
         dbHelper = new DBHelper(this);
         bookmarkList = (ListView) findViewById(R.id.bookmarkList);
-        bookmarkAdapter = new BookmarkAdapter(this, dbHelper.getAllWordFromBookmark());
+        bookmarkAdapter = new BookmarkAdapter(BookmarkActivity.this, dbHelper.getAllWordFromBookmark());
         bookmarkList.setAdapter(bookmarkAdapter);
+
         Intent intentFromMain = getIntent();
         String dicType = intentFromMain.getStringExtra("dic_type");
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
+        Toolbar toolbar = findViewById(R.id.bookmark_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close){};
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
 
         bookmarkAdapter.setOnItemCLick(new ListItemListener() {
             @Override
@@ -85,6 +102,10 @@ public class BookmarkActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         int id = item.getItemId();
         if (id == R.id.action_clear) {
             dbHelper.clearBookmark();
@@ -96,6 +117,9 @@ public class BookmarkActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 }

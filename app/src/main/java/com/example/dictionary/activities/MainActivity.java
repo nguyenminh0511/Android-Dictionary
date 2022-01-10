@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity
 
     MenuItem menuSetting;
     DictionaryFragment dictionaryFragment;
-//    BookmarkFragment bookmarkFragment;
-//    DetailFragment detailFragment;
     Toolbar toolbar;
     DBHelper dbHelper;
 
@@ -60,8 +58,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dictionaryFragment = new DictionaryFragment();
-//        bookmarkFragment = BookmarkFragment.getNewInstance(dbHelper);
-//        detailFragment = new DetailFragment();
         goToFragment(dictionaryFragment, true);
 
         dictionaryFragment.setOnFragmentListener(new FragmentListener() {
