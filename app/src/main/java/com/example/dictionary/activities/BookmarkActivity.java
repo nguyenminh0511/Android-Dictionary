@@ -116,6 +116,10 @@ public class BookmarkActivity extends AppCompatActivity
 
         if (id == R.id.nav_back_home) {
             onBackPressed();
+        } else if (id == R.id.nav_online) {
+            Intent intentToOnlineTranslation = new Intent(BookmarkActivity.this, OnlineTranslate.class);
+            finish();
+            startActivity(intentToOnlineTranslation);
         } else {
             drawer.closeDrawer(GravityCompat.START);
         }

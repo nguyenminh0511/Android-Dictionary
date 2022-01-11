@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity
             Intent intentToBookmark = new Intent(MainActivity.this, BookmarkActivity.class);
             intentToBookmark.putExtra("dic_type", dicType);
             startActivity(intentToBookmark);
+        } else if (id == R.id.nav_online) {
+            Intent intentToOnlineTranslate = new Intent(MainActivity.this, OnlineTranslate.class);
+            startActivity(intentToOnlineTranslate);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
