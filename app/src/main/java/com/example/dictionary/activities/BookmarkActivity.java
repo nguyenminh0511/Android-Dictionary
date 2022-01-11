@@ -1,17 +1,13 @@
 package com.example.dictionary.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -20,8 +16,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.dictionary.BookmarkAdapter;
 import com.example.dictionary.DBHelper;
-import com.example.dictionary.DetailActivity;
-import com.example.dictionary.Global;
 import com.example.dictionary.ListItemListener;
 import com.example.dictionary.R;
 import com.google.android.material.navigation.NavigationView;
@@ -122,6 +116,8 @@ public class BookmarkActivity extends AppCompatActivity
 
         if (id == R.id.nav_back_home) {
             onBackPressed();
+        } else {
+            drawer.closeDrawer(GravityCompat.START);
         }
         return true;
     }

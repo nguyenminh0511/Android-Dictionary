@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.widget.EditText;
 
 import com.example.dictionary.DBHelper;
-import com.example.dictionary.DetailActivity;
 import com.example.dictionary.DictionaryFragment;
 import com.example.dictionary.FragmentListener;
 import com.example.dictionary.Global;

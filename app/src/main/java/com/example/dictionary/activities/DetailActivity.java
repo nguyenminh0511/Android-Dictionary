@@ -1,4 +1,4 @@
-package com.example.dictionary;
+package com.example.dictionary.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,10 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.dictionary.DBHelper;
+import com.example.dictionary.R;
+import com.example.dictionary.Word;
 
 import java.util.Locale;
 

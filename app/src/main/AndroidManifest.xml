@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name=".activities.DetailActivity"
             android:exported="true"
             android:theme="@style/Theme.Dictionary.NoActionBar"/>
         <activity
