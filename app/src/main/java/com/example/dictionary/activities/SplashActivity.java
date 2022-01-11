@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } finally {
                     finish();
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, OnlineTranslate.class);
                     startActivity(intent);
                 }
             }
