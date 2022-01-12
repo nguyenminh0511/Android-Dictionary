@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import com.example.dictionary.Language;
 import com.example.dictionary.R;
 import com.example.dictionary.translateAPI;
 
@@ -15,6 +18,8 @@ public class OnlineTranslate extends AppCompatActivity {
     EditText text,fromLangCode,toLangCode;
     TextView translatedText;
     Button btnTranslate;
+    NumberPicker fromLang, toLang;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +28,8 @@ public class OnlineTranslate extends AppCompatActivity {
         text = findViewById(R.id.textInput);
         fromLangCode = findViewById(R.id.from_lang);
         toLangCode = findViewById(R.id.to_lang);
+        fromLang = findViewById(R.id.fromLang);
+        toLang = findViewById(R.id.toLang);
         translatedText = findViewById(R.id.translated_text);
         btnTranslate = findViewById(R.id.btnTranslate);
         btnTranslate.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +56,28 @@ public class OnlineTranslate extends AppCompatActivity {
                 translate.execute(text.getText().toString(),fromLangCode.getText().toString(),toLangCode.getText().toString());
             }
         });
+
+        Language.initLanguage();
+        fromLang.setMaxValue(Language.getLanguageArrayList().size() - 1);
+        fromLang.setMinValue(0);
+        fromLang.setDisplayedValues(Language.languageNames());
+        toLang.setMaxValue(Language.getLanguageArrayList().size() - 1);
+        toLang.setMinValue(0);
+        toLang.setDisplayedValues(Language.languageNames());
+
+        fromLang.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                fromLangCode.setText(Language.getLanguageArrayList().get(newVal).getCode());
+            }
+        });
+
+        toLang.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                toLangCode.setText(Language.getLanguageArrayList().get(newVal).getCode());
+            }
+        });
     }
 
     @Override
@@ -56,11 +85,4 @@ public class OnlineTranslate extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    //    private void initUi() {
-//        text=findViewById(R.id.textInput);
-//        fromLangCode=findViewById(R.id.from_lang);
-//        toLangCode=findViewById(R.id.to_lang);
-//        translatedText=findViewById(R.id.translated_text);
-//        btnTranslate=findViewById(R.id.btnTranslate);
-//    }
 }

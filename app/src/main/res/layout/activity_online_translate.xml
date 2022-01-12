@@ -22,32 +22,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
-                android:minHeight="150dp"
+                android:minHeight="100dp"
                 android:background="@drawable/border"
                 android:gravity="top|left"/>
 
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
-                <AutoCompleteTextView
+                <NumberPicker
                     android:id="@+id/fromLang"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="English" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <NumberPicker
+                    android:id="@+id/toLang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/from_lang"
+                android:text="en"
                 android:hint="Enter from language code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <EditText
                 android:id="@+id/to_lang"
+                android:text="vi"
                 android:hint="Enter to language code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -71,7 +79,7 @@
                 android:padding="10dp"
                 android:textSize="25sp"
                 android:layout_width="match_parent"
-                android:minHeight="150dp"
+                android:minHeight="100dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border"/>
         </LinearLayout>
