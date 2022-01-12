@@ -24,41 +24,43 @@
                 android:scrollbars="vertical"
                 android:minHeight="100dp"
                 android:background="@drawable/border"
-                android:gravity="top|left"/>
+                android:gravity="top|left"
+                android:layout_marginBottom="24dp"/>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_margin="10dp">
 
-                <NumberPicker
-                    android:id="@+id/fromLang"
+                <Spinner
+                    android:id="@+id/fromLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:spinnerMode="dialog"
+                    android:background="@drawable/spinner_background"
 
-                <NumberPicker
-                    android:id="@+id/toLang"
+                    />
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"/>
+                    android:src="@drawable/ic_arrow_right"/>
+
+                <Spinner
+                    android:id="@+id/toLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:spinnerMode="dialog"
+                    android:background="@drawable/spinner_background"
+                    />
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/from_lang"
-                android:text="en"
-                android:hint="Enter from language code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/to_lang"
-                android:text="vi"
-                android:hint="Enter to language code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
             <Button
                 android:id="@+id/btnTranslate"
                 android:text="Translate"
@@ -66,6 +68,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 />
             <TextView
                 android:text="Translated Text:"
@@ -79,7 +83,7 @@
                 android:padding="10dp"
                 android:textSize="25sp"
                 android:layout_width="match_parent"
-                android:minHeight="100dp"
+                android:minHeight="150dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border"/>
         </LinearLayout>
