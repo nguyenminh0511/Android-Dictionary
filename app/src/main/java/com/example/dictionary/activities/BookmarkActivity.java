@@ -1,6 +1,7 @@
 package com.example.dictionary.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -80,6 +81,15 @@ public class BookmarkActivity extends AppCompatActivity
                 bookmarkAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
     @Override
