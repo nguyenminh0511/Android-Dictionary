@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.dictionary.DBHelper;
 import com.example.dictionary.DictionaryFragment;
@@ -139,10 +140,7 @@ public class MainActivity extends AppCompatActivity
             menuSetting.setIcon(getDrawable(R.drawable.vietnamese_english_1));
             return true;
         } else if (id == R.id.action_eng_eng) {
-            Global.saveState(this, "dic_type", String.valueOf(id));
-            ArrayList<String> source = dbHelper.getWord(id);
-            dictionaryFragment.resetDataSource(source);
-            menuSetting.setIcon(getDrawable(R.drawable.english_english_1));
+            Toast.makeText(this, "Not support yet", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

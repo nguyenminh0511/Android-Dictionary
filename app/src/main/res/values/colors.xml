@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#1870d5</color>
     <color name="colorFill">#f603a3</color>
+    <color name="holo_red_dark">#ffcc0000</color>
 
 </resources>
