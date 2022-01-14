@@ -6,12 +6,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.dictionary.DBHelper;
-import com.example.dictionary.DictionaryFragment;
-import com.example.dictionary.FragmentListener;
 import com.example.dictionary.Global;
 import com.example.dictionary.R;
 import com.google.android.material.navigation.NavigationView;
@@ -19,9 +21,6 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,9 +32,11 @@ public class MainActivity extends AppCompatActivity
 {
 
     MenuItem menuSetting;
-    DictionaryFragment dictionaryFragment;
     Toolbar toolbar;
     DBHelper dbHelper;
+    ArrayAdapter<String> adapter;
+    ListView dicList;
+    ArrayList<String> mSource = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +58,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        dictionaryFragment = new DictionaryFragment();
-        goToFragment(dictionaryFragment, true);
-
-        dictionaryFragment.setOnFragmentListener(new FragmentListener() {
+        dicList = findViewById(R.id.dictionaryList);
+        dicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(String value) {
-
-                String id = Global.getState(MainActivity.this, "dic_type");
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String dicType = Global.getState(MainActivity.this, "dic_type");
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("word", value);
-                intent.putExtra("dic_type", id);
+                intent.putExtra("word", mSource.get(position));
+                intent.putExtra("dic_type", dicType);
                 startActivity(intent);
             }
         });
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                dictionaryFragment.filterValue(s.toString());
+                filterValue(s.toString());
             }
 
             @Override
@@ -89,6 +87,18 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    public void filterValue(String value) {
+//        adapter.getFilter().filter(value);
+
+        int size = adapter.getCount();
+        for (int i = 0; i < size; ++i) {
+            if (adapter.getItem(i).startsWith(value)) {
+                dicList.setSelection(i);
+                break;
+            }
+        }
     }
 
     @Override
@@ -105,7 +115,9 @@ public class MainActivity extends AppCompatActivity
         } else {
             ArrayList<String> source = dbHelper.getWord(R.id.action_eng_vn);
 
-            dictionaryFragment.resetDataSource(source);
+            mSource = source;
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
+            dicList.setAdapter(adapter);
         }
 
         return true;
@@ -130,13 +142,17 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_eng_vn) {
             Global.saveState(this, "dic_type", String.valueOf(id));
             ArrayList<String> source = dbHelper.getWord(id);
-            dictionaryFragment.resetDataSource(source);
+            mSource = source;
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
+            dicList.setAdapter(adapter);
             menuSetting.setIcon(getDrawable(R.drawable.english_vietnamese_1));
             return true;
         } else if (id == R.id.action_vn_eng) {
             Global.saveState(this, "dic_type", String.valueOf(id));
             ArrayList<String> source = dbHelper.getWord(id);
-            dictionaryFragment.resetDataSource(source);
+            mSource = source;
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
+            dicList.setAdapter(adapter);
             menuSetting.setIcon(getDrawable(R.drawable.vietnamese_english_1));
             return true;
         } else if (id == R.id.action_eng_eng) {
@@ -168,34 +184,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    void goToFragment(Fragment fragment, boolean isTop) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setReorderingAllowed(true);
-
-        fragmentTransaction.replace(R.id.fragment_container, fragment, null);
-
-        if (!isTop) {
-            fragmentTransaction.addToBackStack(null);
-        }
-        fragmentTransaction.commit();
-    }
-
-    //Change option menu when change fragment
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        String activeFragment = getSupportFragmentManager().
-//                findFragmentById(R.id.fragment_container).getClass().getSimpleName();
-//        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
-//            menuSetting.setVisible(false);
-//            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
-//            toolbar.setTitle("Bookmark");
-//        } else {
-//            menuSetting.setVisible(true);
-//            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
-//            toolbar.setTitle("");
-//        }
+//    void goToFragment(Fragment fragment, boolean isTop) {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.setReorderingAllowed(true);
 //
-//        return true;
+//        fragmentTransaction.replace(R.id.fragment_container, fragment, null);
+//
+//        if (!isTop) {
+//            fragmentTransaction.addToBackStack(null);
+//        }
+//        fragmentTransaction.commit();
 //    }
 }
