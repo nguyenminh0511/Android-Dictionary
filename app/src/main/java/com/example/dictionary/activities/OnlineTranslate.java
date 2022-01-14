@@ -1,22 +1,32 @@
 package com.example.dictionary.activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
+import com.example.dictionary.Global;
 import com.example.dictionary.Language;
 import com.example.dictionary.R;
 import com.example.dictionary.translateAPI;
+import com.google.android.material.navigation.NavigationView;
 
-public class OnlineTranslate extends AppCompatActivity {
+public class OnlineTranslate extends AppCompatActivity
+    implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText text;
     String fromLangCode = "en";
@@ -25,11 +35,28 @@ public class OnlineTranslate extends AppCompatActivity {
     Button btnTranslate;
     Spinner fromLang, toLang;
     ArrayAdapter<String> fromAdapter, toAdapter;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
+    String dicTypeToTransfer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_online_translate);
+        setContentView(R.layout.online_main);
+
+        Toolbar toolbar = findViewById(R.id.online_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        Intent intentFromMain = getIntent();
+        dicTypeToTransfer = intentFromMain.getStringExtra("dic_type");
 
         text = findViewById(R.id.textInput);
         fromLang = findViewById(R.id.fromLanguage);
@@ -102,4 +129,20 @@ public class OnlineTranslate extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_back_home) {
+            onBackPressed();
+        } else if (id == R.id.nav_bookmark) {
+            Intent intentToBookMark = new Intent(OnlineTranslate.this, BookmarkActivity.class);
+            intentToBookMark.putExtra("dic_type", dicTypeToTransfer);
+            finish();
+            startActivity(intentToBookMark);
+        } else {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
 }

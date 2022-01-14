@@ -160,6 +160,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(intentToBookmark);
         } else if (id == R.id.nav_online) {
             Intent intentToOnlineTranslate = new Intent(MainActivity.this, OnlineTranslate.class);
+            String dicType = Global.getState(MainActivity.this, "dic_type");
+            intentToOnlineTranslate.putExtra("dic_type", dicType);
             startActivity(intentToOnlineTranslate);
         }
 
