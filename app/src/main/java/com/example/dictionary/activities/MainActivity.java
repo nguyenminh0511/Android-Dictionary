@@ -1,6 +1,7 @@
 package com.example.dictionary.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -89,6 +90,12 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public void resetDatabase(ArrayList<String> source) {
+        mSource = source;
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
+        dicList.setAdapter(adapter);
+    }
+
     public void filterValue(String value) {
 //        adapter.getFilter().filter(value);
 
@@ -113,11 +120,8 @@ public class MainActivity extends AppCompatActivity
         if (id != null) {
             onOptionsItemSelected(menu.findItem(Integer.valueOf(id)));
         } else {
-            ArrayList<String> source = dbHelper.getWord(R.id.action_eng_vn);
-
-            mSource = source;
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
-            dicList.setAdapter(adapter);
+            ChangeDictType changeDictType = new ChangeDictType();
+            changeDictType.execute(R.id.action_eng_vn);
         }
 
         return true;
@@ -141,18 +145,14 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_eng_vn) {
             Global.saveState(this, "dic_type", String.valueOf(id));
-            ArrayList<String> source = dbHelper.getWord(id);
-            mSource = source;
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
-            dicList.setAdapter(adapter);
+            ChangeDictType changeDictType = new ChangeDictType();
+            changeDictType.execute(id);
             menuSetting.setIcon(getDrawable(R.drawable.english_vietnamese_1));
             return true;
         } else if (id == R.id.action_vn_eng) {
             Global.saveState(this, "dic_type", String.valueOf(id));
-            ArrayList<String> source = dbHelper.getWord(id);
-            mSource = source;
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
-            dicList.setAdapter(adapter);
+            ChangeDictType changeDictType = new ChangeDictType();
+            changeDictType.execute(id);
             menuSetting.setIcon(getDrawable(R.drawable.vietnamese_english_1));
             return true;
         } else if (id == R.id.action_eng_eng) {
@@ -184,16 +184,20 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-//    void goToFragment(Fragment fragment, boolean isTop) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.setReorderingAllowed(true);
-//
-//        fragmentTransaction.replace(R.id.fragment_container, fragment, null);
-//
-//        if (!isTop) {
-//            fragmentTransaction.addToBackStack(null);
-//        }
-//        fragmentTransaction.commit();
-//    }
+    class ChangeDictType extends AsyncTask<Integer, Void, ArrayList<String>> {
+
+
+        @Override
+        protected ArrayList<String> doInBackground(Integer... integers) {
+            int id = integers[0];
+            ArrayList<String> source = dbHelper.getWord(id);
+            return source;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            resetDatabase(strings);
+        }
+    }
+
 }
