@@ -29,6 +29,7 @@ public class BookmarkActivity extends AppCompatActivity
     BookmarkAdapter bookmarkAdapter;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
+    String dicType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class BookmarkActivity extends AppCompatActivity
         bookmarkList.setAdapter(bookmarkAdapter);
 
         Intent intentFromMain = getIntent();
-        String dicType = intentFromMain.getStringExtra("dic_type");
+        dicType = intentFromMain.getStringExtra("dic_type");
 
         Toolbar toolbar = findViewById(R.id.bookmark_toolbar);
         setSupportActionBar(toolbar);
@@ -118,6 +119,7 @@ public class BookmarkActivity extends AppCompatActivity
             onBackPressed();
         } else if (id == R.id.nav_online) {
             Intent intentToOnlineTranslation = new Intent(BookmarkActivity.this, OnlineTranslate.class);
+            intentToOnlineTranslation.putExtra("dic_type", dicType);
             finish();
             startActivity(intentToOnlineTranslation);
         } else {

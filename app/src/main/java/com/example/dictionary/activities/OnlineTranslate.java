@@ -37,7 +37,7 @@ public class OnlineTranslate extends AppCompatActivity
     ArrayAdapter<String> fromAdapter, toAdapter;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
-    String dicTypeToTransfer;
+    String dicType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class OnlineTranslate extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intentFromMain = getIntent();
-        dicTypeToTransfer = intentFromMain.getStringExtra("dic_type");
+        dicType = intentFromMain.getStringExtra("dic_type");
 
         text = findViewById(R.id.textInput);
         fromLang = findViewById(R.id.fromLanguage);
@@ -136,10 +136,10 @@ public class OnlineTranslate extends AppCompatActivity
         if (id == R.id.nav_back_home) {
             onBackPressed();
         } else if (id == R.id.nav_bookmark) {
-            Intent intentToBookMark = new Intent(OnlineTranslate.this, BookmarkActivity.class);
-            intentToBookMark.putExtra("dic_type", dicTypeToTransfer);
+            Intent intentToBookmark = new Intent(OnlineTranslate.this, BookmarkActivity.class);
+            intentToBookmark.putExtra("dic_type", dicType);
             finish();
-            startActivity(intentToBookMark);
+            startActivity(intentToBookmark);
         } else {
             drawer.closeDrawer(GravityCompat.START);
         }
