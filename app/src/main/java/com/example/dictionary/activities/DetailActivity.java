@@ -152,7 +152,6 @@ public class DetailActivity extends AppCompatActivity {
             tvWordTranslate.setWebChromeClient(new WebChromeClient() {
                 @Override
                 public void onProgressChanged(WebView view, int newProgress) {
-                    progressBar.setProgress(newProgress);
                     if (newProgress == 100) {
                         progressBar.setVisibility(View.GONE);
                     } else {

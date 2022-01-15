@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dictionary.DBHelper;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     ArrayAdapter<String> adapter;
     ListView dicList;
     ArrayList<String> mSource = new ArrayList<String>();
+    ProgressBar progressBar;
+    TextView loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         dbHelper = new DBHelper(this);
+        progressBar = findViewById(R.id.progressBarLoadDB);
+        loading = findViewById(R.id.loadingText);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -185,17 +191,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     class ChangeDictType extends AsyncTask<Integer, Void, ArrayList<String>> {
-
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected ArrayList<String> doInBackground(Integer... integers) {
             int id = integers[0];
+            publishProgress();
             ArrayList<String> source = dbHelper.getWord(id);
             return source;
         }
 
         @Override
+        protected void onProgressUpdate(Void... values) {
+            progressBar.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.VISIBLE);
+            super.onProgressUpdate(values);
+        }
+
+        @Override
         protected void onPostExecute(ArrayList<String> strings) {
+            progressBar.setVisibility(View.GONE);
+            loading.setVisibility(View.GONE);
             resetDatabase(strings);
         }
     }
