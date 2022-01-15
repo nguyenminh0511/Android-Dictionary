@@ -3,13 +3,17 @@ package com.example.dictionary.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.dictionary.DBHelper;
@@ -26,6 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
     private int mDictype;
     private TextToSpeech pronun;
+    ProgressBar progressBar;
 
 
     @Override
@@ -39,6 +44,8 @@ public class DetailActivity extends AppCompatActivity {
         btnVolumn = (ImageButton) findViewById(R.id.volumnBtn);
         btnBack = (ImageButton) findViewById(R.id.backBtn);
         mDBHelper = new DBHelper(this);
+        progressBar = findViewById(R.id.progressBarForWebView);
+        progressBar.setMax(100);
 
         Intent intent = getIntent();
         String value = intent.getStringExtra("word");
@@ -111,6 +118,7 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            progressBar.setProgress(0);
             super.onPreExecute();
         }
 
@@ -141,6 +149,18 @@ public class DetailActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             tvWordTranslate.loadDataWithBaseURL(null, s, "text/html",
                     "utf-8", null);
+            tvWordTranslate.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onProgressChanged(WebView view, int newProgress) {
+                    progressBar.setProgress(newProgress);
+                    if (newProgress == 100) {
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                    super.onProgressChanged(view, newProgress);
+                }
+            });
         }
 
         protected String getDescription() {

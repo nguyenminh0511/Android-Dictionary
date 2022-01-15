@@ -48,6 +48,13 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/progressBarForWebView"
+        android:background="@color/teal_700"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
