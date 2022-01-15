@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     ArrayList<String> mSource = new ArrayList<String>();
     ProgressBar progressBar;
     TextView loading;
+    EditText edit_search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        EditText edit_search = findViewById(R.id.edit_search);
+        edit_search = findViewById(R.id.edit_search);
         edit_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         mSource = source;
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSource);
         dicList.setAdapter(adapter);
+        edit_search.setText("");
     }
 
     public void filterValue(String value) {

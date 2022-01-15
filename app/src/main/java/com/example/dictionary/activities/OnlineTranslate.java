@@ -7,7 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,13 +35,14 @@ public class OnlineTranslate extends AppCompatActivity
     EditText text;
     String fromLangCode = "en";
     String toLangCode = "vi";
-    TextView translatedText;
+    TextView translatedText, connectionMessage;
     Button btnTranslate;
     Spinner fromLang, toLang;
     ArrayAdapter<String> fromAdapter, toAdapter;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
     String dicType;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,12 @@ public class OnlineTranslate extends AppCompatActivity
         Intent intentFromMain = getIntent();
         dicType = intentFromMain.getStringExtra("dic_type");
 
+        progressBar = findViewById(R.id.progressBarOnlineTranslating);
+        progressBar.setVisibility(View.GONE);
+
         text = findViewById(R.id.textInput);
+        connectionMessage = findViewById(R.id.connectionMessage);
+        connectionMessage.setVisibility(View.GONE);
         fromLang = findViewById(R.id.fromLanguage);
         toLang = findViewById(R.id.toLanguage);
         translatedText = findViewById(R.id.translated_text);
@@ -66,25 +76,34 @@ public class OnlineTranslate extends AppCompatActivity
         btnTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                translateAPI translate = new translateAPI();
-                translate.setOnTranslationCompleteListener(new translateAPI.OnTranslationCompleteListener() {
-                    @Override
-                    public void onStartTranslation() {
-                        // here you can perform initial work before translated the text like displaying progress bar
-                    }
+                if (!isNetworkAvailable()) {
+                    connectionMessage.setVisibility(View.VISIBLE);
+                } else {
+                    connectionMessage.setVisibility(View.GONE);
+                    translateAPI translate = new translateAPI();
+                    translate.setOnTranslationCompleteListener(new translateAPI.OnTranslationCompleteListener() {
+                        @Override
+                        public void onStartTranslation() {
+                            // here you can perform initial work before translated the text like displaying progress bar
+                            progressBar.setVisibility(View.VISIBLE);
+                        }
 
-                    @Override
-                    public void onCompleted(String text) {
-                        // "text" variable will give you the translated text
-                        translatedText.setText(text);
-                    }
+                        @Override
+                        public void onCompleted(String text) {
+                            // "text" variable will give you the translated text
+                            translatedText.setText(text);
+                            progressBar.setVisibility(View.GONE);
+                            connectionMessage.setVisibility(View.GONE);
+                        }
 
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
-                translate.execute(text.getText().toString(),fromLangCode,toLangCode);
+                        @Override
+                        public void onError(Exception e) {
+                            connectionMessage.setVisibility(View.VISIBLE);
+                            connectionMessage.setText("Error!!! Can't translate this paragraph!");
+                        }
+                    });
+                    translate.execute(text.getText().toString(), fromLangCode, toLangCode);
+                }
             }
         });
 
@@ -144,5 +163,12 @@ public class OnlineTranslate extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

@@ -26,6 +26,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:id="@+id/progressBarOnlineTranslating"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:background="@color/purple_200"
+        android:indeterminate="true"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -95,15 +103,29 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button"
                     android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="10dp"
                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/connectionMessage"
+                    android:text="Please check your internet connection to use this feature!"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:textStyle="italic"
+                    android:textSize="15dp"
+                    />
+
                 <TextView
                     android:text="Translated Text:"
                     android:textSize="25sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:layout_marginTop="14dp"/>
+
                 <TextView
                     android:id="@+id/translated_text"
                     android:padding="10dp"
@@ -111,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:minHeight="150dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border"/>
+                    android:background="@drawable/border" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
